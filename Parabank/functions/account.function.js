@@ -3,7 +3,6 @@ import {pause} from './global.function'
 const { faker } = require('@faker-js/faker');
 export async function registerUser(page,credential){
 
-    // await page.getByRole('link', { name: 'Register' }).click();
     await page.locator('[id="customer\\.firstName"]').click();
     await page.locator('[id="customer\\.firstName"]').fill(faker.person.firstName());
     await page.locator('[id="customer\\.lastName"]').click();
@@ -14,9 +13,7 @@ export async function registerUser(page,credential){
     await page.locator('[id="customer\\.address\\.city"]').fill(faker.location.city());
     await page.locator('[id="customer\\.address\\.state"]').click();
     await page.locator('[id="customer\\.address\\.state"]').fill(faker.location.state());
-  //   await page.getByRole('row', { name: 'Zip Code:' }).getByRole('cell').nth(1).click();
     await page.locator('[id="customer\\.address\\.zipCode"]').fill(faker.location.zipCode());
-  //   await page.getByRole('row', { name: 'Phone #:' }).getByRole('cell').nth(1).click();
     await page.locator('[id="customer\\.phoneNumber"]').fill(faker.string.numeric(10));
     await page.locator('[id="customer\\.ssn"]').click();
     await page.locator('[id="customer\\.ssn"]').fill(faker.string.numeric(10));
@@ -31,8 +28,7 @@ export async function registerUser(page,credential){
 }
 
 export async function createAccount(page,type)  {
-  //given  
-  // await page.goto('/parabank/openaccount.htm'); 
+  
   await page.getByTestId('type').selectOption(type);
   let options = await page.getByTestId('fromAccountId').locator('option').allTextContents();
 
@@ -48,9 +44,5 @@ export async function createAccount(page,type)  {
   await expect(page.getByText('Your new account number:')).toBeVisible();
 
   return await page.getByTestId('newAccountId').textContent();
-  // expect(accountNumber).not.toBeDefined();
-  // expect(accountNumber).not.toBe('');
-  
-  // const t = "";
 
 };
