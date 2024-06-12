@@ -1,3 +1,5 @@
+const { expect } = require('@playwright/test');
+import {pause} from './global.function'
 const { faker } = require('@faker-js/faker');
 export async function registerUser(page,credential){
 
@@ -27,3 +29,28 @@ export async function registerUser(page,credential){
     await page.getByRole('button', { name: 'Register' }).click();
   
 }
+
+export async function createAccount(page,type)  {
+  //given  
+  // await page.goto('/parabank/openaccount.htm'); 
+  await page.getByTestId('type').selectOption(type);
+  let options = await page.getByTestId('fromAccountId').locator('option').allTextContents();
+
+  while (options.length === 0){
+    await pause(500);
+    options  = await page.getByTestId('fromAccountId').locator('option').allTextContents();
+  }
+
+  expect(options.length).toBeGreaterThan(0);
+
+  await page.getByTestId('fromAccountId').selectOption(options[0]);
+  await page.getByRole('button', {name: 'Open New Account'}).click();
+  await expect(page.getByText('Your new account number:')).toBeVisible();
+
+  return await page.getByTestId('newAccountId').textContent();
+  // expect(accountNumber).not.toBeDefined();
+  // expect(accountNumber).not.toBe('');
+  
+  // const t = "";
+
+};
