@@ -18,7 +18,7 @@ export async function registerUser(page,credential){
     await page.locator('[id="customer\\.ssn"]').click();
     await page.locator('[id="customer\\.ssn"]').fill(faker.string.numeric(10));
     await page.locator('[id="customer\\.username"]').click();
-    await page.locator('[id="customer\\.username"]').fill(credential.userName); //Athi
+    await page.locator('[id="customer\\.username"]').fill(credential.userName); 
     await page.locator('[id="customer\\.password"]').click();
     await page.locator('[id="customer\\.password"]').fill(credential.password);
     await page.locator('#repeatedPassword').click();
@@ -28,7 +28,7 @@ export async function registerUser(page,credential){
 }
 
 export async function createAccount(page,type)  {
-  
+ 
   await page.getByTestId('type').selectOption(type);
   let options = await page.getByTestId('fromAccountId').locator('option').allTextContents();
 
@@ -44,5 +44,13 @@ export async function createAccount(page,type)  {
   await expect(page.getByText('Your new account number:')).toBeVisible();
 
   return await page.getByTestId('newAccountId').textContent();
-
+  
 };
+
+export async function transferFunds(page, amount) {
+
+  await page.locator('#amount').fill(amount.toString());
+  await page.getByRole('button', { name: 'Transfer' }).click();
+  await expect(page.getByRole('heading', { name: 'Transfer Complete!' })).toBeVisible();
+  await expect(page.getByText(`$${amount}.00 has been transferred`)).toBeVisible();
+}

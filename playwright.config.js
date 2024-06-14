@@ -22,7 +22,7 @@ module.exports = defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
 
-  timeout: 60000, // Global timeout for all tests, in milliseconds
+  // timeout: 60000, // Global timeout for all tests, in milliseconds
  
 
   reporter: 'html',
